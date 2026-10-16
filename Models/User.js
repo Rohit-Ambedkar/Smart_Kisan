@@ -7,12 +7,19 @@ const UserSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:true,
-        unique:true
+        required:true
+    },
+    phone:{
+        type:String,
+        required:true
     },
     password:{
         type:String,
         required:true
+    },
+    language:{
+        type:String,
+        enum:['hi','en']
     },
     role:{
         type:String,
