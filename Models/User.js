@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     },
     language:{
         type:String,
-        enum:['hi','en']
+        enum:['hindi','english']
     },
     role:{
         type:String,
