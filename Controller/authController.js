@@ -48,6 +48,7 @@ const registerFarmer = async (req, res) => {
         phone: user.phone,
         role: user.role,
         language: user.language,
+        password: user.password,
       },
     });
   } catch (error) {
@@ -107,4 +108,65 @@ const loginFarmer = async (req, res) => {
   }
 };
 
-module.exports = { registerFarmer, loginFarmer };
+// getAll Farmers
+const getAll = async (req, res) => {
+  try {
+    const users = await User.find({ role: "farmer" });
+    if (!users) {
+      return res.status(404).json({
+        msg: "User Not Found!",
+      });
+    }
+
+    return res.status(200).json({
+      msg: "Get All Farmers",
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// getById
+
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const users = await User.findById(id);
+    if (!users || users.role !== "farmer") {
+      return res.status(404).json({
+        msg: "User Not Found!",
+      });
+    }
+
+    return res.status(200).json({
+      msg: "User Get By Id",
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+// Delete
+
+const userDelete = async (req,res)=>{
+  try{
+      const {id} = req.params;
+      const users = await User.findByIdAndDelete(id);
+      if(!users){
+        return res.status(404).json({
+          msg:"User not Found!"
+        })
+      }
+      return res.status(200).json({
+        msg:"user Delete Successfully",
+        users,
+      })
+  }catch(error){
+    console.log(error);
+  }
+}
+
+module.exports = { registerFarmer, loginFarmer, getAll, getById ,userDelete};
