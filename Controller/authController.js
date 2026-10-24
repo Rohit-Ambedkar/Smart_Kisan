@@ -148,25 +148,72 @@ const getById = async (req, res) => {
   }
 };
 
-
 // Delete
 
-const userDelete = async (req,res)=>{
-  try{
-      const {id} = req.params;
-      const users = await User.findByIdAndDelete(id);
-      if(!users){
-        return res.status(404).json({
-          msg:"User not Found!"
-        })
-      }
-      return res.status(200).json({
-        msg:"user Delete Successfully",
-        users,
-      })
-  }catch(error){
+const userDelete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const users = await User.findByIdAndDelete(id);
+    if (!users) {
+      return res.status(404).json({
+        msg: "User not Found!",
+      });
+    }
+    return res.status(200).json({
+      msg: "user Delete Successfully",
+      users,
+    });
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
-module.exports = { registerFarmer, loginFarmer, getAll, getById ,userDelete};
+// Update
+
+const updateData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        msg: "Invalid User Id!",
+      });
+    }
+
+    const { name, email, phone, password, language } = req.body;
+  
+
+    const user = await User.findByIdAndUpdate(id,{ $set: { name, email, phone, password, language }},{ new: true, runValidators: true });
+
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "User Not Found!",
+      });
+    }
+
+    return res.status(200).json({
+      msg: "DataUpdate Successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        language: user.language,
+        password: user.password,
+      },
+    });
+
+
+  } catch (error) {
+    console.log(error);
+    
+    }
+};
+module.exports = {
+  registerFarmer,
+  loginFarmer,
+  getAll,
+  getById,
+  userDelete,
+  updateData,
+};
