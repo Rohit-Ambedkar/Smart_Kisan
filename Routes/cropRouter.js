@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const CropQuery = require('../Models/CropRule');
+const CropQuery = require('../Models/cropQuery');
 const {protect} = require('../middleware/authMiddleware');
 
 const storage = multer.memoryStorage();
@@ -36,6 +36,18 @@ router.post('/upload', protect, upload.single('cropImage'), async (req, res) => 
     }
 });
 
+
+// sabhi Querys
+router.get('/my-queries',protect, async (req,res)=>{
+    try{
+        const queries = await CropQuery.find({farmerId:req.user.id})
+        .select('-ImageBuffer') // Exclude the image buffer from the response
+        .sort({createdAt:-1});
+        res.json(queries);
+    }catch(error){
+        res.status(500).json({msg:error.msg});
+    }
+});
 
 router.get('/images/:id', async (req, res) => {
     try {
