@@ -6,6 +6,7 @@ const ConnectDb = require("./config/db.js");
 dotenv.config();
 const app = express();
 const authRouter = require("./Routes/authRouter.js");
+const cropRouter = require("./Routes/cropRouter.js");
 
 // middleware
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // apis
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/crop", cropRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

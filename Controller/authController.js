@@ -180,10 +180,12 @@ const updateData = async (req, res) => {
     }
 
     const { name, email, phone, password, language } = req.body;
-  
 
-    const user = await User.findByIdAndUpdate(id,{ $set: { name, email, phone, password, language }},{ new: true, runValidators: true });
-
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: { name, email, phone, password, language } },
+      { new: true, runValidators: true },
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -202,12 +204,9 @@ const updateData = async (req, res) => {
         password: user.password,
       },
     });
-
-
   } catch (error) {
     console.log(error);
-    
-    }
+  }
 };
 module.exports = {
   registerFarmer,
